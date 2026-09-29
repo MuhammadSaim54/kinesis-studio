@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 export default function CustomCursor() {
-  const [cursorText, setCursorText] = useState('');
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -11,17 +10,17 @@ export default function CustomCursor() {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // Precision Needle Spring (Instant & Tight)
-  const pointerSpring = { damping: 30, stiffness: 450, mass: 0.2 };
+  // Pointer Needle (Instant & Tight)
+  const pointerSpring = { damping: 32, stiffness: 500, mass: 0.15 };
   const cursorX = useSpring(mouseX, pointerSpring);
   const cursorY = useSpring(mouseY, pointerSpring);
 
-  // Trailing Ring Spring (Fluid & Floating)
-  const ringSpring = { damping: 24, stiffness: 220, mass: 0.6 };
+  // Magnetic Ring (Silky Smooth)
+  const ringSpring = { damping: 26, stiffness: 240, mass: 0.5 };
   const ringX = useSpring(mouseX, ringSpring);
   const ringY = useSpring(mouseY, ringSpring);
 
-  // Ambient Halo Spring (Dreamy drift)
+  // Ambient Halo
   const haloSpring = { damping: 45, stiffness: 90, mass: 1.2 };
   const haloX = useSpring(mouseX, haloSpring);
   const haloY = useSpring(mouseY, haloSpring);
@@ -34,14 +33,8 @@ export default function CustomCursor() {
     };
 
     const handleMouseOver = (e) => {
-      const target = e.target.closest('[data-cursor]');
-      if (target) {
-        setIsHovered(true);
-        setCursorText(target.getAttribute('data-cursor') || '');
-      } else {
-        setIsHovered(false);
-        setCursorText('');
-      }
+      const isInteractive = e.target.closest('button, a, input, [role="button"], .group, pre');
+      setIsHovered(!!isInteractive);
     };
 
     const handleMouseDown = () => setIsClicked(true);
@@ -64,7 +57,7 @@ export default function CustomCursor() {
 
   return (
     <div className="hidden lg:block pointer-events-none fixed inset-0 z-50 overflow-hidden">
-      {/* 1. Deep Atmospheric Violet & Cyan Ambient Halo */}
+      {/* 1. Ultraviolet Ambient Aura */}
       <motion.div
         style={{
           x: haloX,
@@ -72,10 +65,10 @@ export default function CustomCursor() {
           translateX: '-50%',
           translateY: '-50%',
         }}
-        className="w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.14)_0%,rgba(6,182,212,0.06)_40%,transparent_70%)] blur-[90px]"
+        className="w-[500px] 2xl:w-[750px] h-[500px] 2xl:h-[750px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.12)_0%,rgba(6,182,212,0.05)_45%,transparent_70%)] blur-[100px]"
       />
 
-      {/* 2. Trailing Outer Interactive Ring / Badge */}
+      {/* 2. Magnetic Interactive Ring */}
       <motion.div
         style={{
           x: ringX,
@@ -84,35 +77,27 @@ export default function CustomCursor() {
           translateY: '-50%',
         }}
         animate={{
-          scale: isHovered ? (cursorText ? 2.4 : 1.6) : isClicked ? 0.8 : 1,
-          borderColor: isHovered ? 'rgba(139, 92, 246, 0.8)' : 'rgba(255, 255, 255, 0.25)',
-          backgroundColor: isHovered 
-            ? 'rgba(139, 92, 246, 0.15)' 
-            : 'rgba(255, 255, 255, 0.02)',
+          scale: isClicked ? 0.75 : isHovered ? 1.45 : 1,
+          borderColor: isHovered ? 'rgba(139, 92, 246, 0.75)' : 'rgba(255, 255, 255, 0.22)',
+          backgroundColor: isHovered ? 'rgba(139, 92, 246, 0.08)' : 'transparent',
         }}
-        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-white/20 backdrop-blur-xs flex items-center justify-center pointer-events-none"
-      >
-        {cursorText && (
-          <span className="text-[7px] font-black tracking-widest text-[#A78BFA] uppercase select-none px-1">
-            {cursorText}
-          </span>
-        )}
-      </motion.div>
+        transition={{ type: 'spring', damping: 22, stiffness: 320 }}
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border backdrop-blur-2xs"
+      />
 
-      {/* 3. Aerodynamic Luxury Precision Needle */}
+      {/* 3. Aerodynamic Precision Arrow Pointer (NO TEXT) */}
       <motion.div
         style={{
           x: cursorX,
           y: cursorY,
-          translateX: '-20%',
-          translateY: '-20%',
+          translateX: '-15%',
+          translateY: '-15%',
         }}
         animate={{
-          scale: isClicked ? 0.75 : isHovered ? 0.9 : 1,
-          rotate: isHovered ? -15 : 0,
+          scale: isClicked ? 0.8 : isHovered ? 1.1 : 1,
+          rotate: isHovered ? -12 : 0,
         }}
-        className="fixed top-0 left-0 pointer-events-none drop-shadow-[0_0_8px_rgba(139,92,246,0.9)]"
+        className="fixed top-0 left-0 drop-shadow-[0_0_10px_rgba(139,92,246,0.85)]"
       >
         <svg 
           width="20" 
@@ -121,7 +106,6 @@ export default function CustomCursor() {
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Futuristic Needle Arrow */}
           <path 
             d="M3 3L10.5 21L13.8 13.8L21 10.5L3 3Z" 
             fill="#FFFFFF" 

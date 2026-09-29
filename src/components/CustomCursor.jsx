@@ -56,7 +56,7 @@ export default function CustomCursor() {
   if (!isVisible) return null;
 
   return (
-    <div className="hidden lg:block pointer-events-none fixed inset-0 z-50 overflow-hidden">
+    <div className="hidden lg:block pointer-events-none fixed inset-0 z-999 overflow-hidden">
       {/* 1. Ultraviolet Ambient Aura */}
       <motion.div
         style={{

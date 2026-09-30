@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SelectedWorks from './components/SelectedWorks';
 import CapabilitiesBento from './components/CapabilitiesBento';
+import Methodology from './components/Methodology';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Hero />
         <SelectedWorks />
         <CapabilitiesBento />
+        <Methodology />
       </main>
     </div>
   );

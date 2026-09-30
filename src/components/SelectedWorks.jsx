@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowUpRight, 
@@ -10,8 +10,8 @@ import {
 
 const CATEGORIES = ['All', 'Spatial Web', 'FinTech', 'AI Systems'];
 
-// Precision Vector Artwork with Fixed Center Coordinate Symmetry
-const AnimatedProjectArtwork = ({ type }) => {
+// ZERO ERROR KINETIC VECTOR ARTWORK (CSS Transforms instead of raw SVG attribute morphing)
+const AnimatedProjectArtwork = memo(function AnimatedProjectArtwork({ type }) {
   if (type === 'telemetry') {
     return (
       <svg className="w-full h-full p-4 sm:p-6" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,22 +20,17 @@ const AnimatedProjectArtwork = ({ type }) => {
         <line x1="30" y1="170" x2="370" y2="170" stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
         <line x1="30" y1="210" x2="370" y2="210" stroke="rgba(255,255,255,0.12)" />
 
-        {/* Dynamic Sine Flow */}
+        {/* Dynamic Static Path with GPU Transform Floating */}
         <motion.path 
-          animate={{
-            d: [
-              "M 30 170 Q 80 80, 140 130 T 240 60 T 320 120 T 370 40",
-              "M 30 160 Q 80 120, 140 90 T 240 100 T 320 80 T 370 60",
-              "M 30 170 Q 80 80, 140 130 T 240 60 T 320 120 T 370 40"
-            ]
-          }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+          d="M 30 170 Q 80 80, 140 130 T 240 60 T 320 120 T 370 40"
+          animate={{ y: [-4, 6, -4], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           stroke="#8B5CF6" 
           strokeWidth="2.5" 
           fill="none" 
         />
 
-        {/* Candlesticks */}
+        {/* Pulsing Candlesticks using CSS Scale and Opacity */}
         {[
           { x: 75, y: 110, h: 55, color: '#8B5CF6', delay: 0 },
           { x: 130, y: 85, h: 45, color: '#06B6D4', delay: 0.3 },
@@ -59,7 +54,6 @@ const AnimatedProjectArtwork = ({ type }) => {
           </g>
         ))}
 
-        {/* Pulse Target */}
         <circle cx="370" cy="40" r="5" fill="#06B6D4" />
         <motion.circle 
           cx="370" 
@@ -68,7 +62,7 @@ const AnimatedProjectArtwork = ({ type }) => {
           stroke="#06B6D4" 
           strokeWidth="1.5" 
           strokeDasharray="4 3" 
-          animate={{ rotate: 360, scale: [0.9, 1.3, 0.9] }}
+          animate={{ rotate: 360, scale: [0.9, 1.25, 0.9] }}
           transition={{ rotate: { duration: 6, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity } }}
           style={{ transformOrigin: "370px 40px" }}
         />
@@ -77,12 +71,9 @@ const AnimatedProjectArtwork = ({ type }) => {
     );
   }
 
-  // FIXED SPATIAL ILLUSTRATION: Perfectly Centered Coordinate Origin at (200, 120)
   if (type === 'spatial') {
     return (
       <svg className="w-full h-full p-4 sm:p-6" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-        
-        {/* Continuous Rotating Gyroscope Rings Centered at 200, 120 */}
         <motion.ellipse 
           cx="200" 
           cy="120" 
@@ -109,35 +100,27 @@ const AnimatedProjectArtwork = ({ type }) => {
           style={{ transformOrigin: "200px 120px" }}
         />
 
-        {/* Centered Floating Isometric 3D Cube (Exactly positioned at center 200, 120) */}
         <motion.g 
           animate={{ y: [-4, 4, -4] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          {/* Top Face */}
           <path d="M 200 78 L 240 101 L 200 124 L 160 101 Z" fill="#06B6D4" fillOpacity="0.2" stroke="#06B6D4" strokeWidth="1.5" />
-          {/* Left Face */}
           <path d="M 160 101 L 200 124 L 200 170 L 160 147 Z" fill="#8B5CF6" fillOpacity="0.3" stroke="#8B5CF6" strokeWidth="1.5" />
-          {/* Right Face */}
           <path d="M 200 124 L 240 101 L 240 147 L 200 170 Z" fill="#6366F1" fillOpacity="0.25" stroke="#6366F1" strokeWidth="1.5" />
-          {/* Internal Center Core Vertex */}
           <circle cx="200" cy="124" r="3.5" fill="#FFFFFF" />
         </motion.g>
 
-        {/* Orbiting Satellite Dot around Center */}
-        <motion.circle 
-          cx="200" 
-          cy="120" 
-          r="4" 
-          fill="#06B6D4"
+        {/* Pure Group Translation (No cx/cy undefined bugs) */}
+        <motion.g
           animate={{
-            cx: [90, 200, 310, 200, 90],
-            cy: [135, 172, 105, 68, 135]
+            x: [-110, 0, 110, 0, -110],
+            y: [15, 52, -15, -52, 15]
           }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        />
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <circle cx="200" cy="120" r="4" fill="#06B6D4" />
+        </motion.g>
 
-        {/* Symmetrical Balanced Metadata Badges */}
         <text x="35" y="35" fill="#06B6D4" fontSize="9" fontFamily="monospace" letterSpacing="1">SPATIAL AXIS: SYNCHRONIZED</text>
         <text x="270" y="215" fill="#8B5CF6" fontSize="9" fontFamily="monospace" letterSpacing="1">120 FPS NATIVE</text>
       </svg>
@@ -155,18 +138,29 @@ const AnimatedProjectArtwork = ({ type }) => {
         <line x1="250" y1="70" x2="340" y2="120" stroke="rgba(244,63,94,0.7)" strokeWidth="2" />
         <line x1="250" y1="160" x2="340" y2="120" stroke="rgba(139,92,246,0.7)" strokeWidth="2" />
 
-        <motion.circle 
-          r="3" 
-          fill="#FFF"
-          animate={{ cx: [70, 160, 250, 340], cy: [60, 100, 70, 120] }}
+        {/* Synapse Pulse 1 via Group Transform */}
+        <motion.g
+          animate={{
+            x: [0, 90, 180, 270],
+            y: [0, 40, 10, 60],
+            opacity: [0, 1, 1, 0]
+          }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.circle 
-          r="3" 
-          fill="#06B6D4"
-          animate={{ cx: [70, 160, 250, 340], cy: [180, 140, 160, 120] }}
+        >
+          <circle cx="70" cy="60" r="3" fill="#FFF" />
+        </motion.g>
+
+        {/* Synapse Pulse 2 via Group Transform */}
+        <motion.g
+          animate={{
+            x: [0, 90, 180, 270],
+            y: [0, -40, -20, -60],
+            opacity: [0, 1, 1, 0]
+          }}
           transition={{ duration: 2.6, repeat: Infinity, ease: "linear", delay: 0.5 }}
-        />
+        >
+          <circle cx="70" cy="180" r="3" fill="#06B6D4" />
+        </motion.g>
 
         {[
           { cx: 70, cy: 60, color: '#F43F5E', r: 5 },
@@ -247,7 +241,7 @@ const AnimatedProjectArtwork = ({ type }) => {
       <text x="140" y="215" fill="#10B981" fontSize="9" fontFamily="monospace" letterSpacing="1">ZK-STARK SETTLED</text>
     </svg>
   );
-};
+});
 
 const PROJECTS = [
   {
@@ -363,7 +357,7 @@ export default function SelectedWorks() {
             </h2>
           </div>
 
-          {/* Smooth Category Filter Pills */}
+          {/* Category Filter Pills */}
           <div className="w-full lg:w-auto overflow-x-auto no-scrollbar py-1">
             <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl whitespace-nowrap min-w-max">
               {CATEGORIES.map((cat) => {
@@ -394,7 +388,7 @@ export default function SelectedWorks() {
 
         </div>
 
-        {/* GLITCH-FREE ANIMATED GRID: popLayout mode prevents layout thrashing */}
+        {/* Glitch-Free Animated Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 2xl:gap-10 min-h-[500px]">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
@@ -411,28 +405,20 @@ export default function SelectedWorks() {
                 onClick={() => setSelectedProject(project)}
                 className="group relative rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/[0.08] hover:border-violet-500/40 p-4 sm:p-7 2xl:p-9 backdrop-blur-2xl transition-colors duration-300 flex flex-col justify-between space-y-5 sm:space-y-6 overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] cursor-pointer"
               >
-                {/* Dynamic Ambient Hover Glow */}
                 <div 
                   className={`absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-20 blur-3xl transition-opacity duration-500 rounded-full pointer-events-none`} 
                 />
 
-                {/* Symmetrical Animated Artwork Frame */}
                 <div className="relative aspect-video w-full rounded-2xl bg-[#03050B] border border-white/[0.08] overflow-hidden flex items-center justify-center group-hover:border-white/[0.2] transition-colors shadow-inner">
-                  
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px]" />
-
-                  {/* Centered Vector Graphic */}
                   <div className="relative z-10 w-full h-full flex items-center justify-center">
                     <AnimatedProjectArtwork type={project.artType} />
                   </div>
-
-                  {/* Corner Expand Button */}
                   <div className="absolute top-3 right-3 w-8 h-8 rounded-xl bg-black/60 border border-white/[0.1] backdrop-blur-md flex items-center justify-center text-slate-400 group-hover:text-white group-hover:border-violet-500/50 transition-colors">
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </div>
 
-                {/* Card Meta & Typography */}
                 <div className="space-y-2.5 sm:space-y-3 relative z-10">
                   <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono">
                     <span className="text-violet-400 font-bold uppercase">{project.category}</span>
@@ -447,7 +433,6 @@ export default function SelectedWorks() {
                     {project.description}
                   </p>
 
-                  {/* Tech Stack Pills */}
                   <div className="flex flex-wrap items-center gap-1.5 pt-1.5 sm:pt-2">
                     {project.tags.map((tag) => (
                       <span

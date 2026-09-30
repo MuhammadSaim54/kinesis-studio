@@ -5,6 +5,8 @@ import Hero from './components/Hero';
 import SelectedWorks from './components/SelectedWorks';
 import CapabilitiesBento from './components/CapabilitiesBento';
 import Methodology from './components/Methodology';
+import ProjectEstimator from './components/ProjectEstimator';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -21,7 +23,11 @@ export default function App() {
         <SelectedWorks />
         <CapabilitiesBento />
         <Methodology />
+        <ProjectEstimator />
       </main>
+
+      {/* 4. Studio Obsidian Signature Footer */}
+      <Footer />
     </div>
   );
 }

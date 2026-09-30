@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
+import KinesisLogo from './KinesisLogo';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,31 +17,19 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 px-2.5 sm:px-6 lg:px-12 2xl:px-24 pt-3 sm:pt-6 transition-all duration-300 pointer-events-none">
       <div className="max-w-[1400px] 2xl:max-w-[1900px] mx-auto w-full flex items-center justify-between pointer-events-auto gap-2">
-        
+
         {/* 1. Brand Island (Responsive compact on 320px) */}
-        <a 
-          href="#" 
+        <a
+          href="#"
           className="group flex items-center gap-2 sm:gap-3 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-violet-500/40 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-all flex-shrink-0"
         >
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 p-[1px] shadow-[0_0_15px_rgba(139,92,246,0.3)] flex-shrink-0">
-            <div className="w-full h-full bg-[#05070E] rounded-[11px] flex items-center justify-center">
-              <span className="text-xs font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-tr from-white to-slate-300 font-mono">
-                K
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[11px] sm:text-xs 2xl:text-sm font-black tracking-[0.2em] text-white uppercase font-mono">
-              KINESIS<span className="text-violet-400">.</span>
-            </span>
-            <span className="text-[7.5px] sm:text-[8px] font-mono tracking-widest text-slate-400 uppercase -mt-0.5">
-              Studio
-            </span>
-          </div>
+          <a href="#" className="flex items-center">
+            <KinesisLogo size="sm" />
+          </a>
         </a>
 
         {/* 2. Floating Dynamic Center Island (Desktop & Ultrawide) */}
-        <nav 
+        <nav
           onMouseLeave={() => setHoveredIdx(null)}
           className="hidden lg:flex items-center p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
         >
